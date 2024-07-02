@@ -3,28 +3,28 @@
 const css = String.raw;
 
 const plutonicationModalStyle = css`
-@import url(https://fonts.googleapis.com/css2?family=Inter:wght@500&family=Lexend:wght@500&family=Libre+Franklin:wght@100&family=Open+Sans&family=Roboto&display=swap);
-
 .plutonication__component {
   display: none;
   /* Changes to flex */
   justify-content: center;
   align-items: center;
-  font-family: "Roboto", "Inter", "Lexend", "Libre Franklin", "Open Sans", sans-serif;
+  font-family: sans-serif;
   background-color: #0e111066;
   color: #242529;
-  position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
-  z-index: 9999;
+  position: fixed;
+  z-index: 99999999;
+  pointer-events: auto;
 }
 
 .plutonication__component-override-styles {
   display: flex;
   padding: 0;
   background-color: white;
+  font-size: 12px;
 }
 
 .plutonication__component>div {
@@ -98,6 +98,19 @@ const plutonicationModalStyle = css`
   grid-template-columns: repeat(4, 70px);
   column-gap: 10px;
   margin: 5px, 0px, 5px, 20px;
+}
+
+.plutonication__component .plutonication__all-wallets-content {
+  height: 400px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  row-gap: 10px;
+  scrollbar-width: none;
+  margin-bottom: 20px;
+}
+
+.plutonication__component .plutonication__all-wallets-content::-webkit-scrollbar {
+  width: none; /* Width of the scrollbar */
 }
 
 .plutonication__component .plutonication__qr-code .plutonication__connection-status {

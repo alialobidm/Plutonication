@@ -8,7 +8,7 @@ const plutonicationModalMainDesktop = html`
 </div>
 
 <div class="plutonication__supported-wallets-header">Supported Wallets:</div>
-<div class="plutonication__wallets-content">
+<div class="plutonication__wallets-content" id="plutonication__wallets-content">
   <!-- Supported wallets -->
 </div>
 `

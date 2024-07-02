@@ -5,11 +5,13 @@ import { AccessCredentials } from "../AccessCredentials"
 import { DOMAttributes } from "react"
 import plutonicationModalMainDesktop from "./PlutonicationModalMainDesktop"
 import plutonicationModalMainMobile from "./PlutonicationModalMainMobile"
+import plutonicationModalAllWallets from "./PlutonicationModalAllWallets"
 import plutonicationModalWalletDownloads from "./PlutonicationModalWalletDownloads"
 import plutonicationModalWalletDownloadDesktop from "./PlutonicationModalWalletDownloadDesktop"
 import plutonicationModalConnectionStatus from "./PlutonicationModalConnectionStatus"
 import plutonicationModalBase from "./PlutonicationModalBase"
 import wallet from "./Wallet"
+import walletPlus from "./WalletPlus"
 import { DownloadWalletDto } from "./DownloadWalletDto"
 import { DeepLinker, initializeDeepLinker } from "./DeepLinker"
 
@@ -28,10 +30,6 @@ export class PlutonicationModal extends HTMLElement {
    */
   constructor() {
     super()
-
-    this.style.zIndex = 99999999
-    this.style.position = "fixed"
-    this.style.pointerEvents = "auto"
 
     this.shadow = this.attachShadow({ mode: "open" })
 
@@ -63,7 +61,7 @@ export class PlutonicationModal extends HTMLElement {
     await this.generateQRCode(this.accessCredentials.ToUri())
 
     // Load supported wallets
-    await this.loadDownloadWallets()
+    await this.loadDownloadWallets(3)
   }
 
   /**
@@ -87,7 +85,7 @@ export class PlutonicationModal extends HTMLElement {
   /**
    * Loads the supported wallets
    */
-  async loadDownloadWallets() {
+  private async loadDownloadWallets(limit: number | undefined) {
 
     //Fetching api with wallets content
 
@@ -101,9 +99,11 @@ export class PlutonicationModal extends HTMLElement {
       }
     }
 
-    const walletsContent: HTMLDivElement = this.shadowRoot.querySelector(".plutonication__wallets-content")
+    const walletsContent: HTMLDivElement = this.shadowRoot?.getElementById("plutonication__wallets-content")
 
-    this.walletInfos.slice(0, 1).forEach((data: DownloadWalletDto, index: number) => {
+    const walletInfos = limit ? this.walletInfos.slice(0, limit) : this.walletInfos
+
+    walletInfos.forEach((data: DownloadWalletDto, index: number) => {
       const walletItem: HTMLDivElement = document.createElement("div")
 
       walletItem.innerHTML = wallet;
@@ -124,22 +124,17 @@ export class PlutonicationModal extends HTMLElement {
       walletsContent.appendChild(walletItem)
     })
 
-    return
+    if (limit && this.walletInfos.length > limit) {
+      const walletItem: HTMLDivElement = document.createElement("div")
 
-    if (this.walletInfos.length > 3) {
-      const showMoreWallets = document.createElement("div")
-      showMoreWallets.id = "showMoreWallets"
-      showMoreWallets.className = "plutonication__wallets-item-plus"
+      walletItem.innerHTML = walletPlus;
+      walletItem.id = `wallet${limit}`
 
-      const plusIcon = document.createElement("img")
-      plusIcon.src = "../../images/plus-icon.svg"
-      plusIcon.alt = "plus icon"
-      plusIcon.width = 30
-      plusIcon.height = 30
+      walletItem.addEventListener("click", () => {
+        this.showAllWallets()
+      })
 
-      showMoreWallets.appendChild(plusIcon)
-
-      walletsContent.appendChild(showMoreWallets)
+      walletsContent.appendChild(walletItem)
     }
   }
 
@@ -147,7 +142,7 @@ export class PlutonicationModal extends HTMLElement {
    * Generate the QRCode in base an input text
    * @param {inputText} - text
    */
-  async generateQRCode(inputText: string) {
+  private async generateQRCode(inputText: string) {
     const qrCodeContainer = this.shadowRoot.getElementById("qr-code")
 
     const qrCodeDataURL = await QRCode.toDataURL(inputText)
@@ -162,17 +157,30 @@ export class PlutonicationModal extends HTMLElement {
   }
 
   /**
-   * Show more wallet options in case there are more than three.
+   * Show all wallet options in case there are more than three.
    */
-  showMoreWallets() {
-    // TODO
+  private async showAllWallets() {
+    this.content.innerHTML = plutonicationModalAllWallets
+
+    // This is loading optimization
+    const modal: HTMLElement = this.shadowRoot?.getElementById("plutonication__component")
+    modal.style.display = "flex"
+
+    // Back button
+    const backButton = this.shadowRoot.querySelector(".plutonication__back")
+    backButton.addEventListener("click", () => {
+      this.showMainDesktopView()
+    })
+
+    // Load supported wallets
+    await this.loadDownloadWallets(undefined)
   }
 
   /**
    * Display the download buttons for the wallet for both iOS and Windows
    * @param {walletItem} - Specific wallet item
    */
-  showWalletDownloads(walletInfo: DownloadWalletDto) {
+  private showWalletDownloads(walletInfo: DownloadWalletDto) {
     this.content.innerHTML = plutonicationModalWalletDownloads
 
     // This is loading optimization
@@ -210,7 +218,7 @@ export class PlutonicationModal extends HTMLElement {
    * Display the download buttons for the wallet for both iOS and Windows
    * @param {walletItem} - Specific wallet item
    */
-  showWalletDownloadDesktop(link: string) {
+  private showWalletDownloadDesktop(link: string) {
     this.content.innerHTML = plutonicationModalWalletDownloadDesktop
 
     // This is loading optimization
