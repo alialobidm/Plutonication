@@ -1,6 +1,8 @@
 # Plutonication
 
-Plutonication is a TypeScript library to create a communication between dapps and wallets across platforms
+Plutonication is a secure way to connect your mobile crypto wallet to dApps remotely.
+
+Optimised for use with Substrate-based blockchains.
 
 # Requirements
 
@@ -19,17 +21,41 @@ npm i @plutonication/plutonication
 
 The overall structure of Plutonication is designed to be as little intrusive as possible.
 
-A comprehensive guide for adding Plutonication to your dApp / Wallet can be found here: https://plutonication-acnha.ondigitalocean.app/docs/javascript.
+A comprehensive guide for adding Plutonication to your dApp / Wallet can be found here: https://plutonication.com/docs/javascript.
 
-# React dApp example
+You can get plutonication working in just 2 lines of extra code.
 
-In the `react-example-dapp` folder, you can find a typescript React application that implements Plutonication.
+# Build Plutonication
+
+```
+# Install all dependencies
+npm i
+
+npm run build
+```
+
+# Build Plutonication + Plutonication Extension
+
+The following command builds both the Plutonication package + Plutonication chrome extension
+
+```
+# Install all dependencies
+npm i
+
+npm run build
+```
+
+# Example dApps
+
+## React dApp example
+
+In the `packages/react-example-dapp/` folder, you can find a typescript React application that implements Plutonication.
 
 ### React dApp docs
 
 A detailed description of the Plutonication implementation can be found:
 
-1) https://plutonication-acnha.ondigitalocean.app/docs/react-example
+1) https://plutonication.com/docs/react-example
 2) in the `packages/react-example-app/src/app.ts` file.
 
 ### Docker
@@ -37,6 +63,9 @@ A detailed description of the Plutonication implementation can be found:
 The following docker file runs the sample React dApp, which can be used for testing all plutonication dApp functionalities.
 
 ```
+# !!! Do not forget to build Plutonication first before trying to run this example dApp !!!
+
+# Navigate to the react example folder
 cd packages
 cd react-example-dapp
 
@@ -48,14 +77,30 @@ docker run -p 3000:3000 plutonication-react-dapp-example
 ### Run locally
 
 ```
+# !!! Do not forget to build Plutonication first before trying to run this example dApp !!!
+
+# Navigate to the react example folder
 cd packages
 cd react-example-dapp
 
-# Install the dApp dependencies
+# Install all dependencies
 npm i
 
 npm start
 ```
+
+## Pure HTML dApp example
+
+If you are interested in the pure integration, just take a look at the Pure HTML example dApp.
+
+```
+# Install all dependencies
+npm i
+
+npm run build-example-dapp
+```
+
+After the Plutonication has been built, just open the `packages/example-dapp/index.html`.
 
 # How Plutonication works
 
@@ -63,23 +108,18 @@ The private key is always saved in your wallet on your phone and is never sent a
 
 You need to pair the dApp with the wallet. To do so, the wallet needs to receive a special link with information needed to establish the connection. The wallet can receive this link, for example, by scanning a QR code. Once the link is received, the dApp and the wallet will get paired via websockets to establish a stable connection between different platforms. After the connection is established, the wallet is ready to receive any Extrinsics, which it can then sign and send back to the dApp.
 
-To get a more in-depth details of the underlying backend, read this guide: https://plutonication-acnha.ondigitalocean.app/docs/flask-server.
-
-# Build the package locally
-
-```
-# Install all dependencies
-npm i
-
-npm run build
-```
+To get a more in-depth details of the underlying backend, read this guide: https://plutonication.com/docs/flask-server.
 
 # Testing
 
 ### Unit tests
-The provided tests showcase how Plutonication can be implemented for both dApps and Wallets.
+
+The provided unit tests showcase most of the Plutonication capabilities.
 
 ```
+# !!! Do not forget to build Plutonication first before trying to run this example dApp !!!
+
+# Navigate to the tests folder
 cd packages
 cd tests
 
@@ -91,17 +131,9 @@ npx playwright test
 
 ### E2E testing with Pluto wallet
 
-Firstly, you will need to run the sample React dApp that can be used for testing.
+Firstly, run the sample React dApp that can be used for testing.
 
-```
-cd packages
-cd react-example-dapp
-
-# Install the dApp dependencies
-npm i
-
-npm start
-```
+Alternatively, you can also use the pure HTML example dApp that is deployed to [github pages](https://rostislavlitovkin.github.io/Plutonication/)
 
 Then, you will need to get Pluto wallet on your phone. There are multiple ways to get it:
 1) Download it from Google Play (for Android phones): https://play.google.com/store/apps/details?id=com.rostislavlitovkin.plutowallet

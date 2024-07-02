@@ -21,8 +21,8 @@ function App() {
     const accessCredentials = new AccessCredentials(
       // Address of Plutonication server
       // Feel free to use this one
-      // Learn more: https://plutonication-acnha.ondigitalocean.app/docs/javascript
-      "wss://plutonication-acnha.ondigitalocean.app/",
+      // Learn more: https://plutonication.com/docs/javascript
+      "https://plutonication.com/",
 
       // dApp name
       "Plutonication test",
@@ -31,15 +31,6 @@ function App() {
       "https://rostislavlitovkin.pythonanywhere.com/plutowalleticonwhite",
     )
 
-    console.log("accessCredentials:", accessCredentials.ToUri())
-
-    // account = await initializePlutonicationDAppClientWithModal(
-    //   accessCredentials,
-    //   (receivedPubkey: string) => {
-    //     publicKey = receivedPubkey
-    //     console.log("receivedPubkey", receivedPubkey)
-    //   }
-    // )
     account = await initializePlutonicationDAppClientWithModal(
       accessCredentials,
       (receivedPubkey: string) => {

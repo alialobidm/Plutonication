@@ -3,7 +3,7 @@ import { cryptoWaitReady } from '@polkadot/util-crypto'
 import { Keyring } from "@polkadot/api";
 
 export const accessCredentials = new AccessCredentials(
-  "wss://plutonication-acnha.ondigitalocean.app/",
+  "https://plutonication.com/",
   "Plutonication test",
   "https://rostislavlitovkin.pythonanywhere.com/plutowalleticonwhite"
 );

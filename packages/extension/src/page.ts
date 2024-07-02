@@ -5,7 +5,7 @@ import type { Injected } from '@polkadot/extension-inject/types';
 
 import { AccessCredentials, initializePlutonicationDAppClientWithModal } from '@plutonication/plutonication';
 
-const plutonicationUrl = "wss://plutonication-acnha.ondigitalocean.app" // "ws://0.0.0.0:8050/plutonication" 
+const plutonicationUrl = "https://plutonication.com" // "ws://0.0.0.0:8050/plutonication" 
 
 function inject() {
   injectExtension(enable, {
