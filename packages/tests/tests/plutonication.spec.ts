@@ -1,34 +1,10 @@
 import { test, expect } from '@playwright/test';
-import { AccessCredentials } from '../../plutonication/src/AccessCredentials';
-import { ApiPromise, WsProvider, Keyring } from "@polkadot/api";
-import { cryptoWaitReady } from '@polkadot/util-crypto'
+import { ApiPromise, WsProvider } from "@polkadot/api";
 import { initializePlutonicationDAppClient } from '../../plutonication/src/PlutonicationDAppClient';
 import { PlutonicationWallet, initializePlutonicationWalletClient } from '../../plutonication/src/PlutonicationWalletClient';
 import type { SignerPayloadJSON, SignerPayloadRaw } from "@polkadot/types/types"
 import { u8aToHex, hexToU8a } from '@polkadot/util';
-
-const accessCredentials = new AccessCredentials(
-  "wss://plutonication-acnha.ondigitalocean.app/",
-  "Plutonication test",
-  "https://rostislavlitovkin.pythonanywhere.com/plutowalleticonwhite"
-);
-
-/// Helper method that returns the Alice account
-async function getAlice() {
-  await cryptoWaitReady()
-
-  // Create an instance of the Keyring
-  const keyring = new Keyring({ type: 'sr25519' })
-
-  // Create pair and add Alice to keyring pair dictionary (with account seed)
-  const alice = keyring.addFromUri('//Alice')
-
-  return alice
-}
-
-test('AccessCredentials to uri', async () => {
-  expect(accessCredentials.ToUri()).toBe(`plutonication:?url=wss%3A%2F%2Fplutonication-acnha.ondigitalocean.app%2F&key=${accessCredentials.key}&name=Plutonication%20test&icon=https%3A%2F%2Frostislavlitovkin.pythonanywhere.com%2Fplutowalleticonwhite`)
-});
+import { accessCredentials, getAlice } from './helper';
 
 test('Communication between dApp and Wallet', async () => {
   const alice = await getAlice()
